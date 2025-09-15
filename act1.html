@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="assets/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Page container */
     .container {
       max-width: 900px;
       margin: 0 auto;
@@ -38,6 +37,19 @@
     a.back:hover {
       color: #ffffff;
     }
+
+    /* Buzzer icon */
+    .buzzer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 70px;
+      transition: transform 0.3s ease, color 0.3s ease;
+      color: #777;
+    }
+    .buzzer.active {
+      color: #ff4040;
+      transform: scale(1.2);
+    }
   </style>
 </head>
 <body>
@@ -45,6 +57,10 @@
   <div class="container">
     <h2>🌡️ Act 1 - DHT11 Sensor Data</h2>
     <canvas id="dhtChart" width="800" height="400"></canvas>
+
+    <!-- Buzzer Status -->
+    <div id="buzzerIcon" class="buzzer">🔕</div>
+
     <a href="index.html" class="back">⬅ Back to Dashboard</a>
   </div>
 
@@ -98,23 +114,35 @@
       }
     });
 
-    // Simulate live updates with random data
     function updateData() {
-      const now = new Date().toLocaleTimeString();
-      const newTemp = Math.floor(Math.random() * 10) + 20;
-      const newHum = Math.floor(Math.random() * 40) + 40;
+      fetch("/act1/data")  // <-- Flask route
+        .then(res => res.json())
+        .then(data => {
+          const now = new Date().toLocaleTimeString();
 
-      dhtChart.data.labels.push(now);
-      dhtChart.data.datasets[0].data.push(newTemp);
-      dhtChart.data.datasets[1].data.push(newHum);
+          dhtChart.data.labels.push(now);
+          dhtChart.data.datasets[0].data.push(data.temperature);
+          dhtChart.data.datasets[1].data.push(data.humidity);
 
-      if (dhtChart.data.labels.length > 10) {
-        dhtChart.data.labels.shift();
-        dhtChart.data.datasets[0].data.shift();
-        dhtChart.data.datasets[1].data.shift();
-      }
+          if (dhtChart.data.labels.length > 10) {
+            dhtChart.data.labels.shift();
+            dhtChart.data.datasets[0].data.shift();
+            dhtChart.data.datasets[1].data.shift();
+          }
 
-      dhtChart.update();
+          dhtChart.update();
+
+          // Update buzzer icon
+          const buzzerIcon = document.getElementById("buzzerIcon");
+          if (data.buzzer) {
+            buzzerIcon.textContent = "🔔";
+            buzzerIcon.classList.add("active");
+          } else {
+            buzzerIcon.textContent = "🔕";
+            buzzerIcon.classList.remove("active");
+          }
+        })
+        .catch(err => console.error("Error fetching data:", err));
     }
 
     setInterval(updateData, 2000);
