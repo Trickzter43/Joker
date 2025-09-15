@@ -24,7 +24,7 @@
     });
 
     function updateData() {
-      fetch("http://YOUR_RASPI_IP:5000/data")  <!-- 🔹 change this -->
+      fetch("http://192.168.43.133:5000/data")  <!-- 🔹 change this -->
         .then(res => res.json())
         .then(data => {
           const now = new Date().toLocaleTimeString();
