@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Act 1 - DHT11</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <h1>Act 1: DHT11 Sensor Data</h1>
+  <canvas id="dhtChart" width="600" height="300"></canvas>
+  <script>
+    const ctx = document.getElementById("dhtChart").getContext("2d");
+    const dhtChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: "Temperature (°C)",
+            borderColor: "red",
+            data: [],
+            fill: false
+          },
+          {
+            label: "Humidity (%)",
+            borderColor: "blue",
+            data: [],
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    // Example simulated data (replace with Flask `/data` later)
+    setInterval(() => {
+      const now = new Date().toLocaleTimeString();
+      const temp = Math.random() * 10 + 20; // fake temp
+      const hum = Math.random() * 30 + 40;  // fake humidity
+
+      dhtChart.data.labels.push(now);
+      dhtChart.data.datasets[0].data.push(temp);
+      dhtChart.data.datasets[1].data.push(hum);
+
+      if (dhtChart.data.labels.length > 10) {
+        dhtChart.data.labels.shift();
+        dhtChart.data.datasets[0].data.shift();
+        dhtChart.data.datasets[1].data.shift();
+      }
+
+      dhtChart.update();
+    }, 2000);
+  </script>
+</body>
+</html>
