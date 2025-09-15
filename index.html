@@ -30,15 +30,26 @@
     <a href="act19.html" class="card">Act 19</a>
     <a href="act20.html" class="card">Act 20</a>
   </div>
-</body>
-</html>
+
+  <!-- ✅ JavaScript should go INSIDE <script> tags, BEFORE </body> -->
+  <script>
+    function updateData() {
+      fetch("/act2/data")
+        .then(res => res.json())
+        .then(data => {
+          chart.data.datasets[0].data.push(data.temperature);
+          chart.data.datasets[1].data.push(100 - data.humidity);
+
+          if (chart.data.labels.length > 20) {
             chart.data.datasets[0].data.shift();
             chart.data.datasets[1].data.shift();
           }
+
           chart.update();
         })
         .catch(err => console.error("Error fetching data:", err));
     }
+
     setInterval(updateData, 2000);
   </script>
 </body>
