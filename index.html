@@ -2,38 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DHT11 Live Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>IoT Activities Dashboard</title>
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <h2>🌡️ Temperature & 💧 Humidity Monitor</h2>
-  <canvas id="sensorChart" width="700" height="350"></canvas>
-
-  <script>
-    const ctx = document.getElementById("sensorChart").getContext("2d");
-    const chart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: [],
-        datasets: [
-          { label: "Temperature (°C)", borderColor: "red", data: [], fill: false },
-          { label: "Humidity (%)", borderColor: "blue", data: [], fill: false }
-        ]
-      },
-      options: { scales: { y: { beginAtZero: true } } }
-    });
-
-    function updateData() {
-      fetch("http://YOUR_RASPI_IP:5000/data")  <!-- 🔹 change this -->
-        .then(res => res.json())
-        .then(data => {
-          const now = new Date().toLocaleTimeString();
-          chart.data.labels.push(now);
-          chart.data.datasets[0].data.push(data.temperature);
-          chart.data.datasets[1].data.push(data.humidity);
-
-          if (chart.data.labels.length > 10) {
-            chart.data.labels.shift();
+  <h1>IoT Activities Dashboard</h1>
+  <div class="grid">
+    <!-- Generate 20 activity tabs -->
+    <a href="act1.html" class="card">Act 1 - DHT11</a>
+    <a href="act2.html" class="card">Act 2</a>
+    <a href="act3.html" class="card">Act 3</a>
+    <a href="act4.html" class="card">Act 4</a>
+    <a href="act5.html" class="card">Act 5</a>
+    <a href="act6.html" class="card">Act 6</a>
+    <a href="act7.html" class="card">Act 7</a>
+    <a href="act8.html" class="card">Act 8</a>
+    <a href="act9.html" class="card">Act 9</a>
+    <a href="act10.html" class="card">Act 10</a>
+    <a href="act11.html" class="card">Act 11</a>
+    <a href="act12.html" class="card">Act 12</a>
+    <a href="act13.html" class="card">Act 13</a>
+    <a href="act14.html" class="card">Act 14</a>
+    <a href="act15.html" class="card">Act 15</a>
+    <a href="act16.html" class="card">Act 16</a>
+    <a href="act17.html" class="card">Act 17</a>
+    <a href="act18.html" class="card">Act 18</a>
+    <a href="act19.html" class="card">Act 19</a>
+    <a href="act20.html" class="card">Act 20</a>
+  </div>
+</body>
+</html>
             chart.data.datasets[0].data.shift();
             chart.data.datasets[1].data.shift();
           }
